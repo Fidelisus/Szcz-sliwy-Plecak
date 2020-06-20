@@ -131,6 +131,11 @@ namespace SzczesliwyPlecak.Controllers
         private async Task PrepareViewDataForAddProducts(int tripId, string searchString ="")
         {
             @ViewData["TripId"] = tripId;
+            PrepareProductsList(searchString);
+        }
+
+        private void PrepareProductsList(string searchString)
+        {
             var products = from p in _context.Product
                 select p;
 
