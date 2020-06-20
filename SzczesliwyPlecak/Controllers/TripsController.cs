@@ -54,8 +54,6 @@ namespace SzczesliwyPlecak.Controllers
         }
 
         // POST: Trips/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FemaleParticipants,MaleParticipants,DurationInDays,TotalTimeHiking,Name,StartDate")] Trip trip)
@@ -87,8 +85,6 @@ namespace SzczesliwyPlecak.Controllers
         }
 
         // POST: Trips/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,DurationInDays,CaloriesNeeded,FatNeeded,CarbohydratesNeeded,FibreNeeded,ProteinsNeeded,SaltNeeded")] Trip trip)
@@ -132,6 +128,40 @@ namespace SzczesliwyPlecak.Controllers
         {
             @ViewData["TripId"] = tripId;
             PrepareProductsList(searchString);
+
+            await SumNutritions(tripId);
+        }
+
+        private async Task SumNutritions(int tripId)
+        {
+            var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
+                .FirstOrDefaultAsync(m => m.Id == tripId);
+
+            var sum = from t in _context.Trip
+                join tp in _context.TripProduct on t.Id equals tp.Trip.Id
+                join p in _context.Product on tp.Product.Id equals p.Id
+                where t.Id == tripId
+                group p by t.Id
+                into g
+                select new Nutritions()
+                {
+                    CaloriesNeeded = trip.CaloriesNeeded,
+                    FatNeeded = trip.FatNeeded,
+                    CarbohydratesNeeded = trip.CarbohydratesNeeded,
+                    ProteinsNeeded = trip.ProteinsNeeded,
+                    Calories = g.Sum(p => p.Calories),
+                    Carbohydrates = g.Sum(p => p.Carbohydrates),
+                    Proteins = g.Sum(p => p.Proteins),
+                    Fat = g.Sum(p => p.Fat),
+                };
+
+            float totalWeight = 0;
+            foreach (var tripProduct in trip.TripProducts)
+            {
+                totalWeight += tripProduct.Quantity * tripProduct.Product.Weight;
+            }
+
+            @ViewData["NutritionSum"] = sum;
         }
 
         private void PrepareProductsList(string searchString)
