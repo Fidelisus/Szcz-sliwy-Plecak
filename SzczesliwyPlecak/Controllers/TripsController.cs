@@ -120,14 +120,20 @@ namespace SzczesliwyPlecak.Controllers
             return View(trip);
         }
 
+        public IActionResult AddProducts(int tripId)
+        {
+            ViewData["TripId"] = tripId;
+            return View();
+        }
+
         // POST: Trips/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProduct(int id, [Bind("Id,Name,StartDate,DurationInDays,CaloriesNeeded,FatNeeded,CarbohydratesNeeded,FibreNeeded,ProteinsNeeded,SaltNeeded")] Trip trip)
+        public async Task<IActionResult> AddProduct(int tripId, [Bind("Id,Name,Calories,Fat,Carbohydrates,Fibre,Proteins,Salt")] Trip trip)
         {
-            if (id != trip.Id)
+            if (tripId != trip.Id)
             {
                 return NotFound();
             }
