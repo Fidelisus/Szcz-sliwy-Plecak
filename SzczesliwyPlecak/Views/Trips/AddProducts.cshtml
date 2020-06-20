@@ -95,7 +95,10 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in (IEnumerable<Product>)@ViewData["ProductList"])
+    
+    <h3>Lista produktów bazie danych</h3>
+
+    @foreach (var item in (IEnumerable<Product>) @ViewData["ProductList"])
     {
         <tr>
             <td>
@@ -121,13 +124,13 @@
                     <input type="hidden" name="tripId" value="@ViewData["TripId"]">
                     <input type="hidden" name="Id" value="@item.Id">
                     <input type="text" name="Quantity">
-                    <input type="submit" value="Dodaj" />
+                    <input type="submit" value="Dodaj"/>
                 </form>
             </td>
             <td>
-                
+                <a asp-action="DeleteProductFromList" asp-route-productId="@item.Id" asp-route-tripId="@ViewData["TripId"]">Usuń z bazy danych</a>
             </td>
-            
+
         </tr>
     }
     </tbody>
