@@ -91,19 +91,45 @@
     <dl class="row">
         <dt class="col-sm-12">
             <a asp-action="AddProducts" asp-route-tripId="@Model.Id">Dodaj produkty</a>
+            @Html.DisplayFor(model => model.TripProducts.Count) sdasd
         </dt>
-
-        @if (Model.TripProducts != null)
-        {
-            @foreach (var item in Model.TripProducts)
-            {
-                <dt class="col-sm-12">
-                    @Html.DisplayFor(modelItem => item.Product.Name)
-                </dt>
-            }
-        }
     </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Kalorie
+            </th>
+            <th>
+                Tłuszcz
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TripProducts)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Calories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Fat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Proteins)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

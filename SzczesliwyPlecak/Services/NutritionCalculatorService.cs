@@ -15,10 +15,8 @@ namespace SzczesliwyPlecak.Services
             trip.CaloriesNeeded = trip.FemaleParticipants * DayCaloriesFemale + trip.MaleParticipants * DayCaloriesMale;
             trip.CarbohydratesNeeded = trip.FemaleParticipants * 10;
             trip.FatNeeded = 10* trip.TotalTimeHiking;
-            trip.FibreNeeded = 345;
             trip.ProteinsNeeded = 13;
-            trip.SaltNeeded = 99;
-
+            trip.TripProducts = new List<TripProduct>();
             return trip;
         }
     }

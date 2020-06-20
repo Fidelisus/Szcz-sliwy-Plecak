@@ -13,9 +13,7 @@ namespace SzczesliwyPlecak.Models
         public float Calories { get; set; }
         public float Fat { get; set; }
         public float Carbohydrates { get; set; }
-        public float Fibre { get; set; }
         public float Proteins { get; set; }
-        public float Salt { get; set; }
         public ICollection<TripProduct> TripProducts { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SzczesliwyPlecak.Data;
 using SzczesliwyPlecak.Models;
 using SzczesliwyPlecak.Services;
@@ -36,7 +37,7 @@ namespace SzczesliwyPlecak.Controllers
                 return NotFound();
             }
 
-            var trip = await _context.Trip
+            var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trip == null)
             {
@@ -126,20 +127,48 @@ namespace SzczesliwyPlecak.Controllers
             return View();
         }
 
-        // POST: Trips/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProduct(int tripId, [Bind("Id,Name,Calories,Fat,Carbohydrates,Fibre,Proteins,Salt")] Trip trip)
+        public async Task<IActionResult> AddProducts(int tripId, [Bind("Id,Name,Calories,Fat,Carbohydrates,Fibre,Proteins,Salt")] Product product)
         {
-            if (tripId != trip.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
+                var trip = await _context.Trip
+                    .FirstOrDefaultAsync(m => m.Id == tripId);
+                if (trip == null)
+                {
+                    return NotFound();
+                }
+
+                if (product.Id == 0)
+                {
+                    _context.Add(product);
+                    await _context.SaveChangesAsync();
+                }
+
+                /*
+                var tripProducts = new TripProduct()
+                    { Product = product, Trip = trip, ProductId = product.Id, TripId = tripId };
+
+                trip.TripProducts ??= new List<TripProduct>();
+                trip.TripProducts.Add(tripProducts);
+
+                product.TripProducts ??= new List<TripProduct>();
+                product.TripProducts.Add(tripProducts);
+                */
+                var newTrip = _context.Trip
+                    .Include(p => p.TripProducts)
+                    .Single(p => p.Id == tripId);
+
+                var newProduct = _context.Product.Include(p => p.TripProducts)
+                    .Single(p => p.Id == product.Id);
+
+                newTrip.TripProducts.Add(new TripProduct()
+                    {Product = newProduct, Trip = newTrip});
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+                /*
                 try
                 {
                     _context.Update(trip);
@@ -157,8 +186,9 @@ namespace SzczesliwyPlecak.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }*/
             }
-            return View(trip);
+            return View();
         }
 
         // GET: Trips/Delete/5
