@@ -220,9 +220,27 @@ namespace SzczesliwyPlecak.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> DeleteProduct(int tripId, int productId)
+        {
+            var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
+                .FirstOrDefaultAsync(m => m.Id == tripId);
+
+            foreach (var tripProduct in trip.TripProducts)
+            {
+                if (tripProduct.Product.Id == productId)
+                {
+                    _context.TripProduct.Remove(tripProduct);
+                }
+            }
+            
+            await _context.SaveChangesAsync();
+            return Redirect(nameof(Details) + "/" + tripId);
+        }
+
         private bool TripExists(int id)
         {
             return _context.Trip.Any(e => e.Id == id);
         }
+
     }
 }

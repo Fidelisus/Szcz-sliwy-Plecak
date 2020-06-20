@@ -93,6 +93,12 @@
                 Kalorie
             </th>
             <th>
+                Białko
+            </th>
+            <th>
+                Węglowodany
+            </th>
+            <th>
                 Tłuszcz
             </th>
             <th></th>
@@ -109,16 +115,21 @@
                 @Html.DisplayFor(modelItem => item.Product.Calories)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Fat)
+                @Html.DisplayFor(modelItem => item.Product.Proteins)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Carbohydrates)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Proteins)
+            </td>
+            <td>
+            <a asp-action="DeleteProduct" asp-route-tripId="@item.Trip.Id" asp-route-productId="@item.Product.Id">Delete</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróc do listy wycieczek</a>
 </div>
