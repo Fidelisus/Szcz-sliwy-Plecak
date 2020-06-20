@@ -120,6 +120,41 @@ namespace SzczesliwyPlecak.Controllers
             return View(trip);
         }
 
+        // POST: Trips/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProduct(int id, [Bind("Id,Name,StartDate,DurationInDays,CaloriesNeeded,FatNeeded,CarbohydratesNeeded,FibreNeeded,ProteinsNeeded,SaltNeeded")] Trip trip)
+        {
+            if (id != trip.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(trip);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TripExists(trip.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(trip);
+        }
+
         // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
