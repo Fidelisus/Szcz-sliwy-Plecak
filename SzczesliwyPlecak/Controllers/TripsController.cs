@@ -138,8 +138,6 @@ namespace SzczesliwyPlecak.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProducts(int tripId, [Bind("Id,Weight,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
         {
-            await PrepareViewDataForAddProducts(tripId);
-
             if (ModelState.IsValid)
             {
                 if (productForm.Id < 0)
@@ -150,19 +148,7 @@ namespace SzczesliwyPlecak.Controllers
                 Product product;
                 if (productForm.Id == 0)
                 {
-                    product = new Product
-                    {
-                        Id = productForm.Id,
-                        Name = productForm.Name,
-                        Calories = productForm.Calories,
-                        Fat = productForm.Fat,
-                        Carbohydrates = productForm.Carbohydrates,
-                        Proteins = productForm.Proteins,
-                        Weight = productForm.Weight
-                    };
-
-                    _context.Add(product);
-                    await _context.SaveChangesAsync();
+                    product = await AddNewProduct(productForm);
                 }
                 else
                 {
@@ -177,19 +163,22 @@ namespace SzczesliwyPlecak.Controllers
                     return NotFound();
                 }
 
-                /*
-                var tripProducts = new TripProduct()
-                    { Product = product, Trip = trip, ProductId = product.Id, TripId = tripId };
-
-                trip.TripProducts ??= new List<TripProduct>();
-                trip.TripProducts.Add(tripProducts);
-
-                product.TripProducts ??= new List<TripProduct>();
-                product.TripProducts.Add(tripProducts);
-                */
                 var newTrip = _context.Trip
                     .Include(p => p.TripProducts)
+                    .ThenInclude(e => e.Product)
                     .Single(p => p.Id == tripId);
+
+                foreach (var tripProduct in newTrip.TripProducts)
+                {
+                    if (tripProduct.Product.Id == product.Id)
+                    {
+                        tripProduct.Quantity += productForm.Quantity;
+                        await _context.SaveChangesAsync();
+                        await PrepareViewDataForAddProducts(tripId);
+                        ProductAddedInfo();
+                        return View();
+                    }
+                }
 
                 var newProduct = _context.Product.Include(p => p.TripProducts)
                     .Single(p => p.Id == product.Id);
@@ -198,12 +187,37 @@ namespace SzczesliwyPlecak.Controllers
                     {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
-                
-                ViewData["Added"] = "Przedmiot dodany";
-                ModelState.Clear();
+                ProductAddedInfo();
+                await PrepareViewDataForAddProducts(tripId);
                 return View();
             }
+            await PrepareViewDataForAddProducts(tripId);
             return View();
+        }
+
+        private async Task<Product> AddNewProduct(ProductForm productForm)
+        {
+            Product product;
+            product = new Product
+            {
+                Id = productForm.Id,
+                Name = productForm.Name,
+                Calories = productForm.Calories,
+                Fat = productForm.Fat,
+                Carbohydrates = productForm.Carbohydrates,
+                Proteins = productForm.Proteins,
+                Weight = productForm.Weight
+            };
+
+            _context.Add(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        private void ProductAddedInfo()
+        {
+            ViewData["Added"] = "Produkt dodany";
+            ModelState.Clear();
         }
 
 

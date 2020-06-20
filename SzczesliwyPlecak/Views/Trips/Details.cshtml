@@ -112,12 +112,13 @@
     <tbody>
         @foreach (var item in Model.TripProducts)
         {
+            var totalWeight = item.Quantity * item.Product.Weight;
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Weight)
+                @Html.DisplayFor(modelItem => totalWeight)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Calories)
