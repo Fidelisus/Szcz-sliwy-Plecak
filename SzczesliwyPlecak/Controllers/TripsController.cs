@@ -121,17 +121,25 @@ namespace SzczesliwyPlecak.Controllers
             return View(trip);
         }
 
-        public async Task<IActionResult> AddProducts(int tripId)
+        public async Task<IActionResult> AddProducts(int tripId, string searchString)
         {
-            await PrepareViewDataForAddProducts(tripId);
+            await PrepareViewDataForAddProducts(tripId, searchString);
             @ViewData["Added"] = "";
             return View();
         }
 
-        private async Task PrepareViewDataForAddProducts(int tripId)
+        private async Task PrepareViewDataForAddProducts(int tripId, string searchString ="")
         {
-            ViewData["TripId"] = tripId;
-            @ViewData["ProductList"] = await _context.Product.ToListAsync();
+            @ViewData["TripId"] = tripId;
+            var products = from p in _context.Product
+                select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.Contains(searchString));
+            }
+
+            @ViewData["ProductList"] = products;
         }
 
         [HttpPost]
