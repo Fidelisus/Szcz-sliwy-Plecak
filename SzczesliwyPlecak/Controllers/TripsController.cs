@@ -124,6 +124,7 @@ namespace SzczesliwyPlecak.Controllers
         public IActionResult AddProducts(int tripId)
         {
             ViewData["TripId"] = tripId;
+            @ViewData["Added"] = "";
             return View();
         }
 
@@ -179,6 +180,8 @@ namespace SzczesliwyPlecak.Controllers
                     {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
+                ViewData["Added"] = "Przedmiot dodany";
+                ModelState.Clear();
                 return View();
             }
             return View();
