@@ -129,8 +129,18 @@ namespace SzczesliwyPlecak.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProducts(int tripId, [Bind("Id,Name,Calories,Fat,Carbohydrates,Fibre,Proteins,Salt")] Product product)
+        public async Task<IActionResult> AddProducts(int tripId, int quantity, [Bind("Id,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
         {
+            var product = new Product
+            {
+                Id = productForm.Id,
+                Name = productForm.Name,
+                Calories = productForm.Calories,
+                Fat = productForm.Fat,
+                Carbohydrates = productForm.Carbohydrates,
+                Proteins = productForm.Proteins,
+            };
+
             if (ModelState.IsValid)
             {
                 var trip = await _context.Trip
@@ -164,29 +174,10 @@ namespace SzczesliwyPlecak.Controllers
                     .Single(p => p.Id == product.Id);
 
                 newTrip.TripProducts.Add(new TripProduct()
-                    {Product = newProduct, Trip = newTrip});
+                    {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-                /*
-                try
-                {
-                    _context.Update(trip);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TripExists(trip.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }*/
             }
             return View();
         }

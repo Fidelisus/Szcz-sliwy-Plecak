@@ -79,7 +79,6 @@
     <dl class="row">
         <dt class="col-sm-12">
             <a asp-action="AddProducts" asp-route-tripId="@Model.Id">Dodaj produkty</a>
-            @Html.DisplayFor(model => model.TripProducts.Count) sdasd
         </dt>
     </dl>
 </div>
@@ -100,6 +99,9 @@
             </th>
             <th>
                 Tłuszcz
+            </th>
+            <th>
+                Ilość
             </th>
             <th></th>
         </tr>
@@ -124,12 +126,15 @@
                 @Html.DisplayFor(modelItem => item.Product.Proteins)
             </td>
             <td>
-            <a asp-action="DeleteProduct" asp-route-tripId="@item.Trip.Id" asp-route-productId="@item.Product.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a asp-action="DeleteProduct" asp-route-tripId="@item.Trip.Id" asp-route-productId="@item.Product.Id">Usuń</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
 <div>
-    <a asp-action="Index">Wróc do listy wycieczek</a>
+    <a asp-action="Index">Wróć do listy wycieczek</a>
 </div>
