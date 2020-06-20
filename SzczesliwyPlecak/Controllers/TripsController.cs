@@ -121,42 +121,55 @@ namespace SzczesliwyPlecak.Controllers
             return View(trip);
         }
 
-        public IActionResult AddProducts(int tripId)
+        public async Task<IActionResult> AddProducts(int tripId)
         {
             ViewData["TripId"] = tripId;
             @ViewData["Added"] = "";
+            @ViewData["ProductList"] = await _context.Product.ToListAsync();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProducts(int tripId, int quantity, [Bind("Id,Weight,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
+        public async Task<IActionResult> AddProducts(int tripId, [Bind("Id,Weight,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
         {
             ViewData["TripId"] = tripId;
-            var product = new Product
-            {
-                Id = productForm.Id,
-                Name = productForm.Name,
-                Calories = productForm.Calories,
-                Fat = productForm.Fat,
-                Carbohydrates = productForm.Carbohydrates,
-                Proteins = productForm.Proteins,
-                Weight = productForm.Weight
-            };
 
             if (ModelState.IsValid)
             {
+                if (productForm.Id < 0)
+                {
+                    return BadRequest();
+                }
+
+                Product product;
+                if (productForm.Id == 0)
+                {
+                    product = new Product
+                    {
+                        Id = productForm.Id,
+                        Name = productForm.Name,
+                        Calories = productForm.Calories,
+                        Fat = productForm.Fat,
+                        Carbohydrates = productForm.Carbohydrates,
+                        Proteins = productForm.Proteins,
+                        Weight = productForm.Weight
+                    };
+
+                    _context.Add(product);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    product = await _context.Product
+                        .FirstOrDefaultAsync(m => m.Id == productForm.Id);
+                }
+
                 var trip = await _context.Trip
                     .FirstOrDefaultAsync(m => m.Id == tripId);
                 if (trip == null)
                 {
                     return NotFound();
-                }
-
-                if (product.Id == 0)
-                {
-                    _context.Add(product);
-                    await _context.SaveChangesAsync();
                 }
 
                 /*
@@ -180,12 +193,15 @@ namespace SzczesliwyPlecak.Controllers
                     {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
+                @ViewData["ProductList"] = await _context.Product.ToListAsync();
                 ViewData["Added"] = "Przedmiot dodany";
                 ModelState.Clear();
                 return View();
             }
+            @ViewData["ProductList"] = await _context.Product.ToListAsync();
             return View();
         }
+
 
         // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
