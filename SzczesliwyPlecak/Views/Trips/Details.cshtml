@@ -89,6 +89,9 @@
                 Nazwa
             </th>
             <th>
+                Waga
+            </th>
+            <th>
                 Kalorie
             </th>
             <th>
@@ -112,6 +115,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Weight)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Calories)

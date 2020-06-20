@@ -129,8 +129,9 @@ namespace SzczesliwyPlecak.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProducts(int tripId, int quantity, [Bind("Id,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
+        public async Task<IActionResult> AddProducts(int tripId, int quantity, [Bind("Id,Weight,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
         {
+            ViewData["TripId"] = tripId;
             var product = new Product
             {
                 Id = productForm.Id,
@@ -139,6 +140,7 @@ namespace SzczesliwyPlecak.Controllers
                 Fat = productForm.Fat,
                 Carbohydrates = productForm.Carbohydrates,
                 Proteins = productForm.Proteins,
+                Weight = productForm.Weight
             };
 
             if (ModelState.IsValid)
@@ -177,7 +179,7 @@ namespace SzczesliwyPlecak.Controllers
                     {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
             }
             return View();
         }
