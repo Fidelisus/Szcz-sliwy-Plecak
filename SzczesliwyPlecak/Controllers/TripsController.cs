@@ -123,17 +123,22 @@ namespace SzczesliwyPlecak.Controllers
 
         public async Task<IActionResult> AddProducts(int tripId)
         {
-            ViewData["TripId"] = tripId;
+            await PrepareViewDataForAddProducts(tripId);
             @ViewData["Added"] = "";
-            @ViewData["ProductList"] = await _context.Product.ToListAsync();
             return View();
+        }
+
+        private async Task PrepareViewDataForAddProducts(int tripId)
+        {
+            ViewData["TripId"] = tripId;
+            @ViewData["ProductList"] = await _context.Product.ToListAsync();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProducts(int tripId, [Bind("Id,Weight,Name,Calories,Fat,Carbohydrates,Proteins,Quantity")] ProductForm productForm)
         {
-            ViewData["TripId"] = tripId;
+            await PrepareViewDataForAddProducts(tripId);
 
             if (ModelState.IsValid)
             {
@@ -193,12 +198,11 @@ namespace SzczesliwyPlecak.Controllers
                     {Product = newProduct, Trip = newTrip, Quantity = productForm.Quantity});
 
                 await _context.SaveChangesAsync();
-                @ViewData["ProductList"] = await _context.Product.ToListAsync();
+                
                 ViewData["Added"] = "Przedmiot dodany";
                 ModelState.Clear();
                 return View();
             }
-            @ViewData["ProductList"] = await _context.Product.ToListAsync();
             return View();
         }
 
