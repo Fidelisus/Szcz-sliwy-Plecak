@@ -2,11 +2,49 @@
 
 @{
     ViewData["Title"] = "Create";
+    var nutrition = (Nutrition)@ViewData["NutritionSum"];
 }
 
 <h1>Dodaj produkty</h1>
 <h3> @ViewData["Added"] </h3>
 <hr />
+
+<dl class="row">
+    <dt class="col-sm-1">
+        Kalorie:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Calories/@nutrition.CaloriesNeeded
+    </dd>
+    <dt class="col-sm-1">
+        Białka:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Proteins/@nutrition.ProteinsNeeded
+    </dd>
+    <dt class="col-sm-1">
+        Cukry
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Carbohydrates/@nutrition.CarbohydratesNeeded
+    </dd>
+</dl>
+<dl class="row">
+    <dt class="col-sm-1">
+        Tłuszcze:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Fat/@nutrition.FatNeeded
+    </dd>
+    <dt class="col-sm-1">
+        Waga:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Weight g
+    </dd>
+</dl>
+<hr />
+
 <div class="row">
     <form asp-action="AddProducts" asp-route-tripId="@ViewData["TripId"]">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -55,89 +93,92 @@
                     <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
             </dd>
-            <dd class="col-sm-4">
+            <dd class="col-sm-2">
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </dd>
+            <dd class="col-sm-4">
+                <div>
+                    <a asp-action="Details" asp-route-id="@ViewData["TripId"]"> Wróć do listy wycieczek </a>
                 </div>
             </dd>
         </dl>
     </form>
 </div>
-<div>
-    <a asp-action="Details" asp-route-id="@ViewData["TripId"]"> Wróć do listy wycieczek </a>
-</div>
+<hr />
 
+<h3>Lista produktów w bazie danych</h3>
+<form asp-action="AddProducts" method="get">
+    <p>
+        Nazwa: <input type="text" name="searchString" />
+        <input type="submit" value="Filtruj" />
+    </p>
+</form>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            Nazwa
-        </th>
-        <th>
-            Waga
-        </th>
-        <th>
-            Kalorie
-        </th>
-        <th>
-            Białko
-        </th>
-        <th>
-            Węglowodany
-        </th>
-        <th>
-            Tłuszcz
-        </th>
-        <th>
-            Ilość
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Waga
+            </th>
+            <th>
+                Kalorie
+            </th>
+            <th>
+                Białko
+            </th>
+            <th>
+                Węglowodany
+            </th>
+            <th>
+                Tłuszcz
+            </th>
+            <th>
+                Ilość
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    
-    <h3>Lista produktów w bazie danych</h3>
-    <form asp-action="AddProducts" method="get">
-        <p>
-            Nazwa: <input type="text" name="searchString" />
-            <input type="submit" value="Filtruj" />
-        </p>
-    </form>
-    @foreach (var item in (IEnumerable<Product>) @ViewData["ProductList"])
-    {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Weight
-            </td>
-            <td>
-                @item.Calories
-            </td>
-            <td>
-                @item.Proteins
-            </td>
-            <td>
-                @item.Carbohydrates
-            </td>
-            <td>
-                @item.Fat
-            </td>
-            <td>
-                <form asp-action="AddProducts">
-                    <input type="hidden" name="tripId" value="@ViewData["TripId"]">
-                    <input type="hidden" name="Id" value="@item.Id">
-                    <input type="text" name="Quantity" required value="1">
-                    <input type="submit" value="Dodaj"/>
-                </form>
-            </td>
-            <td>
-                <a asp-action="DeleteProductFromList" asp-route-productId="@item.Id" asp-route-tripId="@ViewData["TripId"]">Usuń z bazy danych</a>
-            </td>
 
-        </tr>
-    }
+        @foreach (var item in (IEnumerable<Product>)@ViewData["ProductList"])
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Weight
+                </td>
+                <td>
+                    @item.Calories
+                </td>
+                <td>
+                    @item.Proteins
+                </td>
+                <td>
+                    @item.Carbohydrates
+                </td>
+                <td>
+                    @item.Fat
+                </td>
+                <td>
+                    <form asp-action="AddProducts">
+                        <input type="hidden" name="tripId" value="@ViewData["TripId"]">
+                        <input type="hidden" name="Id" value="@item.Id">
+                        <input type="text" name="Quantity" required value="1">
+                        <input type="submit" value="Dodaj" />
+                    </form>
+                </td>
+                <td>
+                    <a asp-action="DeleteProductFromList" asp-route-productId="@item.Id" asp-route-tripId="@ViewData["TripId"]">Usuń z bazy danych</a>
+                </td>
+
+            </tr>
+        }
     </tbody>
 </table>
 

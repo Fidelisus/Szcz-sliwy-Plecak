@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SzczesliwyPlecak.Models
 {
-    public class Nutritions
+    public class Nutrition
     {
         public float Weight { get; set; }
         public float Calories { get; set; }

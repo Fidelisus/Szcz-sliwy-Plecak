@@ -137,13 +137,13 @@ namespace SzczesliwyPlecak.Controllers
             var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
                 .FirstOrDefaultAsync(m => m.Id == tripId);
 
-            var sum = from t in _context.Trip
+            var sum = (from t in _context.Trip
                 join tp in _context.TripProduct on t.Id equals tp.Trip.Id
                 join p in _context.Product on tp.Product.Id equals p.Id
                 where t.Id == tripId
                 group p by t.Id
                 into g
-                select new Nutritions()
+                select new Nutrition()
                 {
                     CaloriesNeeded = trip.CaloriesNeeded,
                     FatNeeded = trip.FatNeeded,
@@ -153,13 +153,15 @@ namespace SzczesliwyPlecak.Controllers
                     Carbohydrates = g.Sum(p => p.Carbohydrates),
                     Proteins = g.Sum(p => p.Proteins),
                     Fat = g.Sum(p => p.Fat),
-                };
+                }).FirstOrDefault();
 
             float totalWeight = 0;
             foreach (var tripProduct in trip.TripProducts)
             {
                 totalWeight += tripProduct.Quantity * tripProduct.Product.Weight;
             }
+
+            sum.Weight = totalWeight;
 
             @ViewData["NutritionSum"] = sum;
         }
