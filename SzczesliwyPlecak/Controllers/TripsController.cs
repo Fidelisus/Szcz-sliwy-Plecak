@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SzczesliwyPlecak.Data;
 using SzczesliwyPlecak.Models;
 using SzczesliwyPlecak.Services;
@@ -241,8 +238,7 @@ namespace SzczesliwyPlecak.Controllers
 
         private async Task<Product> AddNewProduct(ProductForm productForm)
         {
-            Product product;
-            product = new Product
+            var product = new Product
             {
                 Id = productForm.Id,
                 Name = productForm.Name,
@@ -308,7 +304,6 @@ namespace SzczesliwyPlecak.Controllers
             }
             
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Details), "Trips", new { id = tripId });
             return Redirect(nameof(Details) + "/" + tripId);
         }
 

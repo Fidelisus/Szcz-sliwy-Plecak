@@ -51,7 +51,7 @@
         <dl class="row">
             <dd class="col-sm-8">
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
+                    <label asp-for="Name" class="control-label">Nazwa</label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
@@ -59,37 +59,37 @@
             <dd class="col-sm-4"></dd>
             <dd class="col-sm-4">
                 <div class="form-group">
-                    <label asp-for="Calories" class="control-label"></label>
+                    <label asp-for="Calories" class="control-label">Kalorie</label>
                     <input asp-for="Calories" class="form-control" />
                     <span asp-validation-for="Calories" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Fat" class="control-label"></label>
-                    <input asp-for="Fat" class="form-control" />
+                    <label asp-for="Fat" class="control-label">Tłuszcz</label>
+                    <input asp-for="Fat" value="0" class="form-control" />
                     <span asp-validation-for="Fat" class="text-danger"></span>
                 </div>
             </dd>
             <dd class="col-sm-4">
                 <div class="form-group">
-                    <label asp-for="Carbohydrates" class="control-label"></label>
-                    <input asp-for="Carbohydrates" class="form-control" />
+                    <label asp-for="Carbohydrates" class="control-label">Węglowodany</label>
+                    <input asp-for="Carbohydrates" value="0" class="form-control" />
                     <span asp-validation-for="Carbohydrates" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Proteins" class="control-label"></label>
-                    <input asp-for="Proteins" class="form-control" />
+                    <label asp-for="Proteins" class="control-label">Białko</label>
+                    <input asp-for="Proteins" value="0" class="form-control" />
                     <span asp-validation-for="Proteins" class="text-danger"></span>
                 </div>
             </dd>
             <dd class="col-sm-4">
                 <div class="form-group">
-                    <label asp-for="Weight" class="control-label"></label>
+                    <label asp-for="Weight" class="control-label">Waga</label>
                     <input asp-for="Weight" class="form-control" />
                     <span asp-validation-for="Weight" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Quantity" class="control-label"></label>
-                    <input asp-for="Quantity" class="form-control" />
+                    <label asp-for="Quantity" class="control-label">Ilość</label>
+                    <input asp-for="Quantity" value="1" class="form-control" />
                     <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
             </dd>

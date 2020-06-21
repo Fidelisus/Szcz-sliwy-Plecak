@@ -1,5 +1,3 @@
-using System;
-
 namespace SzczesliwyPlecak.Models
 {
     public class ErrorViewModel
