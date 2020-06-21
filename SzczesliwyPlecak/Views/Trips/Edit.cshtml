@@ -1,12 +1,10 @@
 ﻿@model SzczesliwyPlecak.Models.Trip
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edytuj";
 }
 
-<h1>Edit</h1>
-
-<h4>Trip</h4>
+<h4>Edytuj szczegóły wycieczki</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,49 +12,44 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Nazwa</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label asp-for="StartDate" class="control-label">Data</label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DurationInDays" class="control-label"></label>
+                <label asp-for="DurationInDays" class="control-label">Długość wycieczki (w dniach)</label>
                 <input asp-for="DurationInDays" class="form-control" />
                 <span asp-validation-for="DurationInDays" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CaloriesNeeded" class="control-label"></label>
-                <input asp-for="CaloriesNeeded" class="form-control" />
-                <span asp-validation-for="CaloriesNeeded" class="text-danger"></span>
+                <label asp-for="TotalTimeHiking" class="control-label">Łączny czas marszu (w godzinach)</label>
+                <input asp-for="TotalTimeHiking" class="form-control" />
+                <span asp-validation-for="TotalTimeHiking" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FatNeeded" class="control-label"></label>
-                <input asp-for="FatNeeded" class="form-control" />
-                <span asp-validation-for="FatNeeded" class="text-danger"></span>
+                <label asp-for="FemaleParticipants" class="control-label">Liczba kobiet</label>
+                <input asp-for="FemaleParticipants" class="form-control" />
+                <span asp-validation-for="FemaleParticipants" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarbohydratesNeeded" class="control-label"></label>
-                <input asp-for="CarbohydratesNeeded" class="form-control" />
-                <span asp-validation-for="CarbohydratesNeeded" class="text-danger"></span>
+                <label asp-for="MaleParticipants" class="control-label"> Liczba mężczyzn </label>
+                <input asp-for="MaleParticipants" class="form-control" />
+                <span asp-validation-for="MaleParticipants" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProteinsNeeded" class="control-label"></label>
-                <input asp-for="ProteinsNeeded" class="form-control" />
-                <span asp-validation-for="ProteinsNeeded" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-route-id="@Model.Id">Wróć do szczegółów wycieczki</a>
 </div>
 
 @section Scripts {

@@ -89,7 +89,7 @@ namespace SzczesliwyPlecak.Controllers
         // POST: Trips/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,DurationInDays,CaloriesNeeded,FatNeeded,CarbohydratesNeeded,FibreNeeded,ProteinsNeeded,SaltNeeded")] Trip trip)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FemaleParticipants,MaleParticipants,DurationInDays,TotalTimeHiking,Name,StartDate")] Trip trip)
         {
             if (id != trip.Id)
             {
@@ -98,6 +98,7 @@ namespace SzczesliwyPlecak.Controllers
 
             if (ModelState.IsValid)
             {
+                _nutritionCalculatorService.CalculateNutrition(trip);
                 try
                 {
                     _context.Update(trip);
@@ -114,7 +115,7 @@ namespace SzczesliwyPlecak.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Redirect("/Trips" + "/" + nameof(Details) + "/" + id);
             }
             return View(trip);
         }
@@ -139,31 +140,27 @@ namespace SzczesliwyPlecak.Controllers
             var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
                 .FirstOrDefaultAsync(m => m.Id == tripId);
 
-            var sum = (from t in _context.Trip
-                join tp in _context.TripProduct on t.Id equals tp.Trip.Id
-                join p in _context.Product on tp.Product.Id equals p.Id
-                where t.Id == tripId
-                group p by t.Id
-                into g
-                select new Nutrition()
-                {
-                    CaloriesNeeded = trip.CaloriesNeeded,
-                    FatNeeded = trip.FatNeeded,
-                    CarbohydratesNeeded = trip.CarbohydratesNeeded,
-                    ProteinsNeeded = trip.ProteinsNeeded,
-                    Calories = g.Sum(p => p.Calories),
-                    Carbohydrates = g.Sum(p => p.Carbohydrates),
-                    Proteins = g.Sum(p => p.Proteins),
-                    Fat = g.Sum(p => p.Fat),
-                }).FirstOrDefault();
+            var sum = new Nutrition()
+            {
+                CaloriesNeeded = trip.CaloriesNeeded,
+                FatNeeded = trip.FatNeeded,
+                CarbohydratesNeeded = trip.CarbohydratesNeeded,
+                ProteinsNeeded = trip.ProteinsNeeded,
+                Weight = 0,
+                Calories = 0,
+                Fat = 0,
+                Carbohydrates = 0,
+                Proteins = 0,
+            };
 
-            float totalWeight = 0;
             foreach (var tripProduct in trip.TripProducts)
             {
-                totalWeight += tripProduct.Quantity * tripProduct.Product.Weight;
+                sum.Weight += tripProduct.Quantity * tripProduct.Product.Weight;
+                sum.Calories += tripProduct.Quantity * tripProduct.Product.Calories;
+                sum.Fat += tripProduct.Quantity * tripProduct.Product.Fat;
+                sum.Carbohydrates += tripProduct.Quantity * tripProduct.Product.Carbohydrates;
+                sum.Proteins += tripProduct.Quantity * tripProduct.Product.Proteins;
             }
-
-            sum.Weight = totalWeight;
 
             @ViewData["NutritionSum"] = sum;
         }
@@ -311,6 +308,7 @@ namespace SzczesliwyPlecak.Controllers
             }
             
             await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Details), "Trips", new { id = tripId });
             return Redirect(nameof(Details) + "/" + tripId);
         }
 
@@ -326,7 +324,7 @@ namespace SzczesliwyPlecak.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Redirect(nameof(AddProducts) + "/" + tripId);
+            return RedirectToAction(nameof(AddProducts), new { tripId = tripId });
         }
 
         private bool TripExists(int id)

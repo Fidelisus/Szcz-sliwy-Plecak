@@ -22,8 +22,8 @@
     <dd class="col-sm-2">
         @nutrition.Proteins/@nutrition.ProteinsNeeded g
     </dd>
-    <dt class="col-sm-1">
-        Cukry
+    <dt class="col-sm-2">
+        Węglowodany:
     </dt>
     <dd class="col-sm-2">
         @nutrition.Carbohydrates/@nutrition.CarbohydratesNeeded g
@@ -100,7 +100,7 @@
             </dd>
             <dd class="col-sm-4">
                 <div>
-                    <a asp-action="Details" asp-route-id="@ViewData["TripId"]"> Wróć do listy wycieczek </a>
+                    <a asp-action="Details" asp-route-id="@ViewData["TripId"]"> Wróć do szczegółów wycieczki </a>
                 </div>
             </dd>
         </dl>
