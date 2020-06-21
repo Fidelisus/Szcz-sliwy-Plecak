@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Szczegóły wycieczki";
     var nutrition = (Nutrition)@ViewData["NutritionSum"];
-    string shortDate = Model.StartDate.ToShortDateString().Remove(6, 2);
+    var shortDate = Model.StartDate.ToShortDateString().Remove(6, 2);
 }
 
 <h1>Szczegóły wycieczki</h1>
@@ -50,19 +50,19 @@
 <hr />
 
 <dl class="row">
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         Kalorie:
     </dt>
     <dd class="col-sm-2">
         @nutrition.Calories/@nutrition.CaloriesNeeded g
     </dd>
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         Białka:
     </dt>
     <dd class="col-sm-2">
         @nutrition.Proteins/@nutrition.ProteinsNeeded g
     </dd>
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         Cukry
     </dt>
     <dd class="col-sm-2">
@@ -70,13 +70,13 @@
     </dd>
 </dl>
 <dl class="row">
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         Tłuszcze:
     </dt>
     <dd class="col-sm-2">
         @nutrition.Fat/@nutrition.FatNeeded g
     </dd>
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         Waga:
     </dt>
     <dd class="col-sm-2">
