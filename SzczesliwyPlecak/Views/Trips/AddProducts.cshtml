@@ -15,19 +15,19 @@
         Kalorie:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Calories/@nutrition.CaloriesNeeded g
+        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) g
     </dd>
     <dt class="col-sm-1">
         Białka:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Proteins/@nutrition.ProteinsNeeded g
+        @nutrition.Proteins/@((int)(nutrition.ProteinsNeeded)) g
     </dd>
     <dt class="col-sm-2">
         Węglowodany:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Carbohydrates/@nutrition.CarbohydratesNeeded g
+        @nutrition.Carbohydrates/@((int)(nutrition.CarbohydratesNeeded)) g
     </dd>
 </dl>
 <dl class="row">
@@ -35,13 +35,13 @@
         Tłuszcze:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Fat/@nutrition.FatNeeded g
+        @nutrition.Fat/@((int)(nutrition.FatNeeded)) g
     </dd>
     <dt class="col-sm-1">
         Waga:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Weight g
+        @((int)(nutrition.Weight)) g
     </dd>
 </dl>
 <hr />

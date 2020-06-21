@@ -40,7 +40,7 @@
         <dd class="col-sm-2">
             @Html.DisplayFor(model => model.MaleParticipants)
         </dd>
-        <dt class="col-sm-12">
+        <dt class="col-sm-4">
             <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj dane wycieczki</a>
         </dt>
     </dl>
@@ -52,19 +52,19 @@
         Kalorie:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Calories/@nutrition.CaloriesNeeded g
+        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) g
     </dd>
     <dt class="col-sm-2">
         Białka:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Proteins/@nutrition.ProteinsNeeded g
+        @nutrition.Proteins/@((int)(nutrition.ProteinsNeeded)) g
     </dd>
     <dt class="col-sm-2">
         Węglowodany:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Carbohydrates/@nutrition.CarbohydratesNeeded g
+        @nutrition.Carbohydrates/@((int)(nutrition.CarbohydratesNeeded)) g
     </dd>
 </dl>
 <dl class="row">
@@ -72,13 +72,13 @@
         Tłuszcze:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Fat/@nutrition.FatNeeded g
+        @nutrition.Fat/@((int)(nutrition.FatNeeded)) g
     </dd>
     <dt class="col-sm-2">
         Waga:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Weight g
+        @((int)(nutrition.Weight)) g
     </dd>
 </dl>
 <hr />

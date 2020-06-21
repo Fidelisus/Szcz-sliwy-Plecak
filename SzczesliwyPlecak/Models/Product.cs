@@ -8,7 +8,7 @@ namespace SzczesliwyPlecak.Models
         public int Id { get; set; }
         [StringLength(60, MinimumLength = 1, ErrorMessage = "Podaj nazwę")]
         public string Name { get; set; }
-        [Range(float.Epsilon, float.MaxValue, ErrorMessage = "Podaj wartość większą od 0")]
+        [Range(0, float.MaxValue, ErrorMessage = "Podaj wartość większą od 0")]
         public float Weight { get; set; }
         [Range(0, float.MaxValue, ErrorMessage = "Podaj wartość większą lub równą 0")]
         public float Calories { get; set; }
