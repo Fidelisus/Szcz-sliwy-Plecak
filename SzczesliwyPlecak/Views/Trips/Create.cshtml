@@ -4,9 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Trip</h4>
+<h1>Stwórz wycieczkę</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,7 +16,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label asp-for="StartDate" class="control-label">Data</label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
@@ -28,29 +26,29 @@
                 <span asp-validation-for="DurationInDays" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TotalTimeHiking" class="control-label"></label>
+                <label asp-for="TotalTimeHiking" class="control-label">Łączny czas marszu (w godzinach)</label>
                 <input asp-for="TotalTimeHiking" class="form-control" />
                 <span asp-validation-for="TotalTimeHiking" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FemaleParticipants" class="control-label"></label>
+                <label asp-for="FemaleParticipants" class="control-label">Liczba kobiet</label>
                 <input asp-for="FemaleParticipants" class="form-control" />
                 <span asp-validation-for="FemaleParticipants" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaleParticipants" class="control-label"></label>
+                <label asp-for="MaleParticipants" class="control-label"> Liczba mężczyzn </label>
                 <input asp-for="MaleParticipants" class="form-control" />
                 <span asp-validation-for="MaleParticipants" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Stwórz wycieczkę" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy wycieczek</a>
 </div>
 
 @section Scripts {
