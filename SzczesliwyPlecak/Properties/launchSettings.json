@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "Trips/Details/6",
+      "launchUrl": "Trips",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
