@@ -1,80 +1,90 @@
 ﻿@model SzczesliwyPlecak.Models.Trip
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły wycieczki";
+    var nutrition = (Nutrition)@ViewData["NutritionSum"];
+    string shortDate = Model.StartDate.ToShortDateString().Remove(6, 2);
 }
 
-<h1>Details</h1>
+<h1>Szczegóły wycieczki</h1>
 
 <div>
-    <h4>Trip</h4>
+    <h4>Wycieczka @Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Data
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-2">
+            @shortDate
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
+            Czas trwania (dni)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DurationInDays)
-        </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-2">
             @Html.DisplayFor(model => model.DurationInDays)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalTimeHiking)
+            Łączny czas marszu
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-2">
             @Html.DisplayFor(model => model.TotalTimeHiking)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FemaleParticipants)
+            Liczba kobiet
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-2">
             @Html.DisplayFor(model => model.FemaleParticipants)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaleParticipants)
+            Liczba mężczyzn
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-2">
             @Html.DisplayFor(model => model.MaleParticipants)
         </dd>
         <dt class="col-sm-12">
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj dane wycieczki</a>
         </dt>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaloriesNeeded)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaloriesNeeded)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FatNeeded)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FatNeeded)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CarbohydratesNeeded)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CarbohydratesNeeded)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProteinsNeeded)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProteinsNeeded)
-        </dd>
     </dl>
 </div>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-1">
+        Kalorie:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Calories/@nutrition.CaloriesNeeded g
+    </dd>
+    <dt class="col-sm-1">
+        Białka:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Proteins/@nutrition.ProteinsNeeded g
+    </dd>
+    <dt class="col-sm-1">
+        Cukry
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Carbohydrates/@nutrition.CarbohydratesNeeded g
+    </dd>
+</dl>
+<dl class="row">
+    <dt class="col-sm-1">
+        Tłuszcze:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Fat/@nutrition.FatNeeded g
+    </dd>
+    <dt class="col-sm-1">
+        Waga:
+    </dt>
+    <dd class="col-sm-2">
+        @nutrition.Weight g
+    </dd>
+</dl>
+<hr />
+
 <div>
     <dl class="row">
         <dt class="col-sm-12">
@@ -113,32 +123,32 @@
         @foreach (var item in Model.TripProducts)
         {
             var totalWeight = item.Quantity * item.Product.Weight;
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => totalWeight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Calories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Proteins)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Carbohydrates)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Fat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                <a asp-action="DeleteProduct" asp-route-tripId="@item.Trip.Id" asp-route-productId="@item.Product.Id">Usuń</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => totalWeight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Calories)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Proteins)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Carbohydrates)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Fat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    <a asp-action="DeleteProduct" asp-route-tripId="@item.Trip.Id" asp-route-productId="@item.Product.Id">Usuń</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

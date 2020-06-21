@@ -44,6 +44,8 @@ namespace SzczesliwyPlecak.Controllers
                 return NotFound();
             }
 
+            await SumNutritions((int)id);
+
             return View(trip);
         }
 
