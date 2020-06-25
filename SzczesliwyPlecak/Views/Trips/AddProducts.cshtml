@@ -15,7 +15,7 @@
         Kalorie:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) g
+        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) kcal
     </dd>
     <dt class="col-sm-1">
         Białka:
@@ -113,6 +113,7 @@
 <form asp-action="AddProducts" method="get">
     <p>
         Nazwa: <input type="text" name="searchString" />
+        <input type="hidden" name="tripId" value="@ViewData["TripId"]" />
         <input type="submit" value="Filtruj" />
     </p>
 </form>

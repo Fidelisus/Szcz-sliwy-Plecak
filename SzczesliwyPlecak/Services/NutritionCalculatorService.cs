@@ -5,8 +5,8 @@ namespace SzczesliwyPlecak.Services
 {
     public class NutritionCalculatorService : INutritionCalculatorService
     {
-        private const int DayCaloriesMale = 2700;
-        private const int HourCaloriesMale = 324;
+        private const int DayCaloriesMale = 2500;
+        private const int HourCaloriesMale = 112;
         private const float FemaleRation = 0.8f;
         private const float CarbohydratesToCalories = 0.128f;
         private const float ProteinToCalories = 0.037f;
@@ -21,6 +21,25 @@ namespace SzczesliwyPlecak.Services
             trip.ProteinsNeeded = trip.CaloriesNeeded * ProteinToCalories;
             trip.TripProducts = new List<TripProduct>();
             return trip;
+        }
+
+        public NutritionDaily CalculateDailyNutritions(Trip trip)
+        {
+            float participants = trip.FemaleParticipants * FemaleRation + trip.MaleParticipants;
+
+            var output = new NutritionDaily
+            {
+                CaloriesMale = trip.CaloriesNeeded/ participants/ trip.DurationInDays,
+                CarbohydratesMale = trip.CarbohydratesNeeded / participants / trip.DurationInDays,
+                ProteinsMale = trip.ProteinsNeeded / participants / trip.DurationInDays,
+                FatMale = trip.FatNeeded/ participants / trip.DurationInDays,
+                CaloriesFemale = trip.CaloriesNeeded / participants * FemaleRation / trip.DurationInDays,
+                CarbohydratesFemale = trip.CarbohydratesNeeded / participants * FemaleRation / trip.DurationInDays,
+                ProteinsFemale = trip.ProteinsNeeded / participants * FemaleRation / trip.DurationInDays,
+                FatFemale = trip.FatNeeded / participants * FemaleRation / trip.DurationInDays,
+            };
+
+            return output;
         }
     }
 }

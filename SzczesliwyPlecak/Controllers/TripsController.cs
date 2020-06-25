@@ -134,6 +134,10 @@ namespace SzczesliwyPlecak.Controllers
 
         private async Task SumNutritions(int tripId)
         {
+            if (tripId == 0)
+            {
+                return;
+            }
             var trip = await _context.Trip.Include(p => p.TripProducts).ThenInclude(e => e.Product)
                 .FirstOrDefaultAsync(m => m.Id == tripId);
 
@@ -160,6 +164,7 @@ namespace SzczesliwyPlecak.Controllers
             }
 
             @ViewData["NutritionSum"] = sum;
+            @ViewData["NutritionDaily"] = _nutritionCalculatorService.CalculateDailyNutritions(trip);
         }
 
         private void PrepareProductsList(string searchString)
@@ -172,7 +177,8 @@ namespace SzczesliwyPlecak.Controllers
                 products = products.Where(s => s.Name.Contains(searchString));
             }
 
-            @ViewData["ProductList"] = products;
+            // products = products.OrderBy(s => s.Name);
+            @ViewData["ProductList"] = products.OrderBy(s => s.Name); ;
         }
 
         [HttpPost]
@@ -302,8 +308,16 @@ namespace SzczesliwyPlecak.Controllers
                     _context.TripProduct.Remove(tripProduct);
                 }
             }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                ViewData["Added"] = "Nie można usunąć, ponieważ produkt jest używany";
+            }
             
-            await _context.SaveChangesAsync();
             return Redirect(nameof(Details) + "/" + tripId);
         }
 

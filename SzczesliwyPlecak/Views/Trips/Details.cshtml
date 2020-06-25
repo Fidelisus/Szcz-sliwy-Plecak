@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Szczegóły wycieczki";
     var nutrition = (Nutrition)@ViewData["NutritionSum"];
+    var nutritionDaily = (NutritionDaily)@ViewData["NutritionDaily"];
     var shortDate = Model.StartDate.ToShortDateString().Remove(6, 2);
 }
 
@@ -52,7 +53,7 @@
         Kalorie:
     </dt>
     <dd class="col-sm-2">
-        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) g
+        @nutrition.Calories/@((int)(nutrition.CaloriesNeeded)) kcal
     </dd>
     <dt class="col-sm-2">
         Białka:
@@ -82,7 +83,62 @@
     </dd>
 </dl>
 <hr />
+<h6>Dzienne zapotrzebowanie kobiety:</h6>
+<dl class="row">
+    <dt class="col-sm-2">
+        Kalorie:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.CaloriesFemale))
+    </dd>
+    <dt class="col-sm-2">
+        Białka:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.ProteinsFemale))
+    </dd>
+    <dt class="col-sm-2">
+        Węglowodany:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.CarbohydratesFemale))
+    </dd>
+    <dt class="col-sm-2">
+        Tłuszcze:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.FatFemale))
+    </dd>
+</dl>
+<h6>Dzienne zapotrzebowanie mężczyzny:</h6>
+<dl class="row">
+    <dt class="col-sm-2">
+        Kalorie:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.CaloriesMale))
+    </dd>
+    <dt class="col-sm-2">
+        Białka:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.ProteinsMale))
+    </dd>
+    <dt class="col-sm-2">
+        Węglowodany:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.CarbohydratesMale))
+    </dd>
+    <dt class="col-sm-2">
+        Tłuszcze:
+    </dt>
+    <dd class="col-sm-1">
+        @((int)(nutritionDaily.FatMale))
+    </dd>
+</dl>
 
+<hr />
 <div>
     <dl class="row">
         <dt class="col-sm-12">
@@ -118,7 +174,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.TripProducts)
+        @foreach (var item in Model.TripProducts.OrderBy(s => s.Product.Name))
         {
             var totalWeight = item.Quantity * item.Product.Weight;
             <tr>
